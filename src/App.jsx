@@ -7,24 +7,30 @@ import GameOver from "./components/GameOver";
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
 
-  console.log("Correct Answers Count - ", correctAnswersCount);
+  console.log(correctAnswers);
+
+  function handleSelectAnswer(selectedAnswer) {
+    let updatedCorrectAnswers = [...correctAnswers];
+    updatedCorrectAnswers.indexOf(selectedAnswer) == -1 &&
+      updatedCorrectAnswers.push(selectedAnswer);
+    setCorrectAnswers(updatedCorrectAnswers);
+  }
 
   function handleSubmitQuiz() {
     setIsGameOver(true);
   }
 
+  const score = correctAnswers.length;
+
   return (
     <div>
       {!isGameStarted && <StartGame onStart={setIsGameStarted} />}
       {isGameStarted && !isGameOver && (
-        <Quiz
-          onSelectAnswer={setCorrectAnswersCount}
-          onSubmit={handleSubmitQuiz}
-        />
+        <Quiz onSelectAnswer={handleSelectAnswer} onSubmit={handleSubmitQuiz} />
       )}
-      {isGameOver && <GameOver correctAnswersCount={correctAnswersCount} />}
+      {isGameOver && <GameOver score={score} />}
     </div>
   );
 }

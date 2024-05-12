@@ -1,11 +1,18 @@
-export default function GameOver({ correctAnswersCount = 0 }) {
+import Celebration from "../../public/celebration.gif";
+
+export default function GameOver({ score = 0 }) {
   return (
-    <div className="w-2/5 bg-white rounded-md mx-auto p-4">
-      <h1 className="text-2xl font-bold text-green-600 p-2">
+    <div className="w-2/5 bg-white rounded-md mx-auto p-4 px-8 font-serif mt-24">
+      <h1 className="text-2xl font-bold text-blue-600 p-4">
         Thanks for Your Participation!
       </h1>
-      <p className="text-xl font-bold p-2">
-        🎉 Quiz Score : {correctAnswersCount} 🎉
+      <img
+        src={Celebration}
+        alt="Celebration GIF"
+        className="w-96 mx-auto rounded"
+      />
+      <p className="text-xl font-bold p-4 font-sans">
+        🎉 Quiz Score : {score} 🎉
       </p>
     </div>
   );
