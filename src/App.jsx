@@ -5,17 +5,21 @@ import Quiz from "./components/Quiz";
 import GameOver from "./components/GameOver";
 
 function App() {
+  const [numOfQuestions, setNumberOfQuestions] = useState(5);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState([]);
-
-  console.log(correctAnswers);
 
   function handleSelectAnswer(selectedAnswer) {
     let updatedCorrectAnswers = [...correctAnswers];
     updatedCorrectAnswers.indexOf(selectedAnswer) == -1 &&
       updatedCorrectAnswers.push(selectedAnswer);
     setCorrectAnswers(updatedCorrectAnswers);
+  }
+
+  function handleStartQuiz(numQuestions) {
+    setIsGameStarted(true);
+    setNumberOfQuestions(numQuestions);
   }
 
   function handleSubmitQuiz() {
@@ -26,11 +30,15 @@ function App() {
 
   return (
     <div>
-      {!isGameStarted && <StartGame onStart={setIsGameStarted} />}
+      {!isGameStarted && <StartGame onStart={handleStartQuiz} />}
       {isGameStarted && !isGameOver && (
-        <Quiz onSelectAnswer={handleSelectAnswer} onSubmit={handleSubmitQuiz} />
+        <Quiz
+          numQuestions={numOfQuestions}
+          onSelectAnswer={handleSelectAnswer}
+          onSubmit={handleSubmitQuiz}
+        />
       )}
-      {isGameOver && <GameOver score={score} />}
+      {isGameOver && <GameOver score={score} totalQuestions={numOfQuestions} />}
     </div>
   );
 }
