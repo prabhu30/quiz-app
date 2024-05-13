@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { DATA } from "../data.js";
 import Question from "./Question.jsx";
 
@@ -9,10 +9,22 @@ export default function Quiz({ numQuestions, onSelectAnswer, onSubmit }) {
   const requiredData = DATA.slice(0, numQuestions);
   const { id, question, options, answer } = requiredData[questionNumber];
 
-  function checkAnswer(selectedAnswer) {
+  const Option1 = useRef(null);
+  const Option2 = useRef(null);
+  const Option3 = useRef(null);
+  const Option4 = useRef(null);
+  const OptionRefs = [Option1, Option2, Option3, Option4];
+
+  function checkAnswer(optionIndex, event) {
+    const selectedAnswer = event.target.innerText;
     setQuestionsAttempted((prevNum) => prevNum + 1);
     if (selectedAnswer === answer) {
       onSelectAnswer(selectedAnswer);
+      event.target.classList.add("correct");
+    } else {
+      event.target.classList.add("wrong");
+      const answerIndex = options.indexOf(answer);
+      OptionRefs[answerIndex].current.classList.add("correct");
     }
   }
 
@@ -29,8 +41,9 @@ export default function Quiz({ numQuestions, onSelectAnswer, onSubmit }) {
       {options.map((option, index) => (
         <li key={option} className="list-none">
           <button
-            className="w-full text-left border border-black p-3 font-mono rounded-lg my-2 hover:bg-blue-200 hover:border-blue-600 hover:text-black focus:bg-blue-200 focus:border-blue-600"
-            onClick={(event) => checkAnswer(event.target.innerText)}
+            className="w-full text-left border border-black p-3 font-mono rounded-lg my-2"
+            ref={OptionRefs[index]}
+            onClick={(event) => checkAnswer(index, event)}
           >
             {option}
           </button>
@@ -41,7 +54,7 @@ export default function Quiz({ numQuestions, onSelectAnswer, onSubmit }) {
         className="w-24 bg-purple-600 text-white rounded-lg p-2 my-2 disabled:bg-gray-600"
         disabled={
           questionNumber >= numQuestions - 1 ||
-          questionNumber != questionsAttempted - 1
+          questionNumber > questionsAttempted - 1
         }
         onClick={() =>
           setQuestionNumber((prevQuestionNum) => prevQuestionNum + 1)

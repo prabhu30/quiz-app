@@ -26,6 +26,11 @@ function App() {
     setIsGameOver(true);
   }
 
+  function handleRestartQuiz() {
+    setIsGameStarted(false);
+    setIsGameOver(false);
+  }
+
   const score = correctAnswers.length;
 
   return (
@@ -38,7 +43,13 @@ function App() {
           onSubmit={handleSubmitQuiz}
         />
       )}
-      {isGameOver && <GameOver score={score} totalQuestions={numOfQuestions} />}
+      {isGameOver && (
+        <GameOver
+          score={score}
+          totalQuestions={numOfQuestions}
+          onRestart={handleRestartQuiz}
+        />
+      )}
     </div>
   );
 }

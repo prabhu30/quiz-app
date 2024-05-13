@@ -6,3 +6,13 @@ body {
     height: 100vh;
     background-image: linear-gradient(#D8C7FF, #19006C);
 }
+
+.correct {
+    border-color: rgb(0, 152, 86);
+    background-color: rgb(140, 252, 205);
+}
+
+.wrong {
+    border-color: rgb(253, 57, 57);
+    background-color: rgb(255, 181, 181);
+}
